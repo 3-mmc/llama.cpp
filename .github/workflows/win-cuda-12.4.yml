@@ -1,5 +1,5 @@
-# Only the win-cuda-12.4-x64 leg of release-prism.yml, unchanged otherwise: the
-# asset D:\prism runs on the GTX 1080. Artifacts only, no release.
+# Only the win-cuda-12.4-x64 leg of release-prism.yml, plus an sm_61-only arch list: the
+# asset D:\prism runs on the GTX 1080, built as sm_61 SASS only (no PTX JIT at load). Artifacts only, no release.
 name: Windows CUDA 12.4 build
 
 on:
@@ -52,6 +52,7 @@ jobs:
           rem ggml-cuda.dll companion for the BACKEND_DL cpu-arm64 zip, like upstream does.
           cmake -S . -B build -G "Ninja Multi-Config" ^
             -DGGML_NATIVE=OFF ^
+            -DCMAKE_CUDA_ARCHITECTURES=61-real ^
             -DGGML_CUDA=ON ^
             ${{ matrix.arch == 'arm64' && '-DGGML_BACKEND_DL=ON -DGGML_CPU=OFF' || '' }} ^
             -DLLAMA_BUILD_BORINGSSL=ON ^
